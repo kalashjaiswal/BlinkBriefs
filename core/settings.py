@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "summarizer.apps.SummarizerConfig",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,16 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Sum It Up",
+    "DESCRIPTION": "Sum It Up is a tool to summarize information from different sources ranging from Newspaper articles, Wikipedia, Youtube transcripts etc.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

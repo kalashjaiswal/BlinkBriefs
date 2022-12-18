@@ -8,9 +8,14 @@ from summarizer.dtos import (
     ValidateWikipediaSummarizeParams,
     ValidateNewsArticleSummarizeParams,
 )
+from drf_spectacular.utils import extend_schema
 
 
 class SummarizerView(APIView):
+    @extend_schema(
+        description="This API end point can be used to summarize normal text data. It requires a percentage parameter which tells what percent of the total length the summary should be of.",
+        request=ValidateSummarizeParams,
+    )
     def post(self, request):
         params = ValidateSummarizeParams(data=request.data)
         if not params.is_valid():
@@ -32,6 +37,10 @@ class SummarizerView(APIView):
 
 
 class YoutubeSummarizerView(APIView):
+    @extend_schema(
+        description="This end point is used to summarize transcript of a Youtube Video given a video link.",
+        request=ValidateYoutubeSummarizeParams,
+    )
     def post(self, request):
         params = ValidateYoutubeSummarizeParams(data=request.data)
         if not params.is_valid():
@@ -53,6 +62,9 @@ class YoutubeSummarizerView(APIView):
 
 
 class WikipediaSummarizerView(APIView):
+    @extend_schema(
+        request=ValidateWikipediaSummarizeParams,
+    )
     def post(self, request):
         params = ValidateWikipediaSummarizeParams(data=request.data)
         if not params.is_valid():
@@ -71,6 +83,7 @@ class WikipediaSummarizerView(APIView):
 
 
 class NewsArticleSummarizerView(APIView):
+    @extend_schema(request=ValidateNewsArticleSummarizeParams)
     def post(self, request):
         params = ValidateNewsArticleSummarizeParams(data=request.data)
         if not params.is_valid():
