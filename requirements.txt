@@ -46,9 +46,9 @@ tinysegmenter==0.3
 tldextract==3.4.0
 tokenizers==0.13.2
 tomli==2.0.1
-torch==1.13.1+cpu
-torchaudio==0.13.1+cpu
-torchvision==0.14.1+cpu
+# torch==1.13.1+cpu
+# torchaudio==0.13.1+cpu
+# torchvision==0.14.1+cpu
 tqdm==4.64.1
 transformers==4.25.1
 typing_extensions==4.4.0

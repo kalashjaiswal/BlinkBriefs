@@ -11,6 +11,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from transformers import BartTokenizer, BartForConditionalGeneration
 
 
+nltk.download("punkt")
+
+
 class SummarizerService:
     @staticmethod
     def get_youtube_transcript(link: str) -> str:
