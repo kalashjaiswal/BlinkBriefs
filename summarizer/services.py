@@ -1,14 +1,11 @@
 import re
+import json
 import nltk
-import sklearn
+import requests
 import wikipedia
-import transformers
 from newspaper import Article
 import youtube_transcript_api
-from nltk.corpus import stopwords
 from youtube_transcript_api import YouTubeTranscriptApi
-from sklearn.feature_extraction.text import TfidfVectorizer
-from transformers import BartTokenizer, BartForConditionalGeneration
 
 
 class SummarizerService:
@@ -20,30 +17,32 @@ class SummarizerService:
         return joined_subtitles
 
     @staticmethod
-    def bart_summarization(text: str, percent: int) -> str:
-        tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
-        model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
-
+    def bart_inference(text: str, percent: int) -> str:
         total_length = len(text.split(" "))
-        required_length = (total_length * percent) // 100
+        min_length = (total_length * percent) // 100
 
-        input_tensor = tokenizer.encode(text, return_tensors="pt", truncation=True)
-        outputs_tensor = model.generate(
-            input_tensor,
-            max_length=required_length + 60,
-            min_length=required_length,
-            length_penalty=2.0,
-            num_beams=4,
-            early_stopping=True,
+        headers = {"Authorization": "Bearer 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"}
+        url = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+
+        data = json.dumps(
+            {
+                "inputs": text,
+                "parameters": {
+                    "min_length": min_length,
+                    "max_length": (min_length + 60),
+                    "do_sample": False,
+                },
+            }
         )
 
-        result = tokenizer.decode(outputs_tensor[0])
-        return result
+        response = requests.request("POST", url, headers=headers, data=data)
+        print(response.content)
+        return json.loads(response.content.decode("utf-8"))
 
     @staticmethod
-    def summarize_youtube_transcript(link: str, percentage: int) -> str:
+    def summarize_youtube_transcript(link: str, percent: int) -> str:
         transcript_content = SummarizerService.get_youtube_transcript(link)
-        result = SummarizerService.bart_summarization(transcript_content, percentage)
+        result = SummarizerService.bart_inference(transcript_content, percent)
         return result
 
     @staticmethod

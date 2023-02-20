@@ -27,7 +27,7 @@ class SummarizerView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        result = SummarizerService.bart_summarization(
+        result = SummarizerService.bart_inference(
             params.data["text"], params.data["percentage"]
         )
         return Response(
