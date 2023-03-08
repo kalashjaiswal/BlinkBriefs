@@ -15,14 +15,15 @@ class SummarizerView(APIView):
     @extend_schema(
         description="This API end point can be used to summarize normal text data. It requires a percentage parameter which tells what percent of the total length the summary should be of.",
         request=ValidateSummarizeParams,
+        responses=None,
     )
     def post(self, request):
         params = ValidateSummarizeParams(data=request.data)
         if not params.is_valid():
             return Response(
                 data={
-                    "status": ERROR,
-                    "details": ErrorFormat.flat_error_string(params.errors),
+                    "status": "Error",
+                    "details": params.errors,
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -31,7 +32,7 @@ class SummarizerView(APIView):
             params.data["text"], params.data["percentage"]
         )
         return Response(
-            data={"summary": result},
+            data={"summary": result[0]["summary_text"]},
             status=status.HTTP_200_OK,
         )
 
@@ -40,14 +41,15 @@ class YoutubeSummarizerView(APIView):
     @extend_schema(
         description="This end point is used to summarize transcript of a Youtube Video given a video link.",
         request=ValidateYoutubeSummarizeParams,
+        responses=None,
     )
     def post(self, request):
         params = ValidateYoutubeSummarizeParams(data=request.data)
         if not params.is_valid():
             return Response(
                 data={
-                    "status": ERROR,
-                    "details": ErrorFormat.flat_error_string(params.errors),
+                    "status": "Error",
+                    "details": params.errors,
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -56,7 +58,7 @@ class YoutubeSummarizerView(APIView):
             params.data["link"], params.data["percentage"]
         )
         return Response(
-            data={"summary": result},
+            data={"summary": result[0]['summary_text']},
             status=status.HTTP_200_OK,
         )
 
@@ -64,14 +66,15 @@ class YoutubeSummarizerView(APIView):
 class WikipediaSummarizerView(APIView):
     @extend_schema(
         request=ValidateWikipediaSummarizeParams,
+        responses=None,
     )
     def post(self, request):
         params = ValidateWikipediaSummarizeParams(data=request.data)
         if not params.is_valid():
             return Response(
                 data={
-                    "status": ERROR,
-                    "details": ErrorFormat.flat_error_string(params.errors),
+                    "status": "Error",
+                    "details": params.errors,
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -83,14 +86,18 @@ class WikipediaSummarizerView(APIView):
 
 
 class NewsArticleSummarizerView(APIView):
-    @extend_schema(request=ValidateNewsArticleSummarizeParams)
+    @extend_schema(
+            request=ValidateNewsArticleSummarizeParams,
+            responses=None,
+    )
+
     def post(self, request):
         params = ValidateNewsArticleSummarizeParams(data=request.data)
         if not params.is_valid():
             return Response(
                 data={
-                    "status": ERROR,
-                    "details": ErrorFormat.flat_error_string(params.errors),
+                    "status": "Error",
+                    "details": params.errors,
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )

@@ -1,10 +1,8 @@
-import re
 import json
-import nltk
 import requests
 import wikipedia
 from newspaper import Article
-import youtube_transcript_api
+from core.settings import HF_API_KEY
 from youtube_transcript_api import YouTubeTranscriptApi
 
 
@@ -21,7 +19,7 @@ class SummarizerService:
         total_length = len(text.split(" "))
         min_length = (total_length * percent) // 100
 
-        headers = {"Authorization": "Bearer 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"}
+        headers = {"Authorization": f"Bearer {HF_API_KEY}"}
         url = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
 
         data = json.dumps(
@@ -36,7 +34,6 @@ class SummarizerService:
         )
 
         response = requests.request("POST", url, headers=headers, data=data)
-        print(response.content)
         return json.loads(response.content.decode("utf-8"))
 
     @staticmethod
