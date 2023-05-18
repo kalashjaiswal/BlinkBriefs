@@ -2,7 +2,12 @@
 ## What this project is about?
 This project is an API which uses hugging face Inference Endpoints and a link of a youtube video to summarize the entire contents of the video based on it's transcripts. The transcripts are fetched via the `youtube_transcript_api` and it is mandatory that the transcripts do exsist for this video.
 
+![Alt Text](https://i.imgur.com/tEVDj1N.png)
+
 ## How can you run this project locally?
+For frontend you can visit this [link](https://github.com/xeromola/sum-it-up-frontend).
+
+
 You need
 - install docker on you system
 - get an API Key from Hugging Face (it's easy trust me :))
