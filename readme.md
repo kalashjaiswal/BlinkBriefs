@@ -1,4 +1,4 @@
-# Sum-It-Up
+# BlinkBriefs
 ## What this project is about?
 This project is an API which uses hugging face Inference Endpoints and a link of a youtube video to summarize the entire contents of the video based on it's transcripts. The transcripts are fetched via the `youtube_transcript_api` and it is mandatory that the transcripts do exsist for this video.
 
